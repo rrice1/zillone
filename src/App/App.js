@@ -50,36 +50,49 @@ class App extends Component {
     this.setState({ authed: true });
   }
 
-  render() {
-    const logoutClickEvent = () => {
-      authRequests.logoutUser();
-      this.setState({ authed: false });
-    };
+deleteOne = (listingId) => {
+  listingRequests.deleteListing(listingId)
+    .then(() => {
+      listingRequests.getRequest()
+        .then((listings) => {
+          this.setState({ listings });
+        });
+    })
+    .catch(err => console.error('error with delete single', err));
+}
 
-    if (!this.state.authed) {
-      return (
+render() {
+  const logoutClickEvent = () => {
+    authRequests.logoutUser();
+    this.setState({ authed: false });
+  };
+
+  if (!this.state.authed) {
+    return (
         <div className="App">
           <MyNavbar isAuthed={this.state.authed} logoutClickEvent={logoutClickEvent}/>
           <div className="row">
           <Auth isAuthenticated={this.isAuthenticated}/>
           </div>
         </div>
-      );
-    }
+    );
+  }
 
-    return (
+  return (
       <div className="App">
         <MyNavbar isAuthed={this.state.authed} logoutClickEvent={logoutClickEvent}/>
         <div className="row">
-        <Listings listings={this.state.listings}/>
+        <Listings listings={this.state.listings}
+        deleteSingleListing={this.deleteOne}
+        />
         <Building/>
         </div>
         <div className="row">
         <ListingForm/>
         </div>
       </div>
-    );
-  }
+  );
+}
 }
 
 export default App;
