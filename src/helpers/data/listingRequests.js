@@ -19,7 +19,7 @@ const getRequest = () => new Promise((resolve, reject) => {
     .catch(err => reject(err));
 });
 
-const deleteListing = listingId => axios.delete(`${firebaseUrl}/listings/${listingId}.json`)
+const deleteListing = listingId => axios.delete(`${firebaseUrl}/listings/${listingId}.json`);
 
 export default {
   getRequest,
